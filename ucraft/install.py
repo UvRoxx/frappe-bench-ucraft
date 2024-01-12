@@ -20,7 +20,8 @@ def create_ucraft_authtoken_and_is_ucraft_user_field_on_user():
     auth_token_field = {
         'fieldname': 'auth_token',
         'label': 'Auth Token',
-        'fieldtype': 'Data',
+        # Longer text
+        'fieldtype': 'Text',
         'insert_after': 'username',  # Adjust this based on your User doctype layout
     }
 

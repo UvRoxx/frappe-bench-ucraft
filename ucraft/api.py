@@ -76,7 +76,7 @@ def handle_callback():
         user.insert(ignore_permissions=True)
     else:
         user = frappe.get_doc("User", user[0].name)
-    # user.auth_token = access_token_data['accessToken']
+    user.auth_token = access_token_data['accessToken']
     user.is_ucraft_user = True
     # Assign the given user all permissions
     user.save(ignore_permissions=True)
