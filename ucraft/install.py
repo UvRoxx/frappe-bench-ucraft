@@ -8,6 +8,7 @@ from frappe.custom.doctype.custom_field.custom_field import CustomField
 def after_install():
     create_ucraft_project_id_field()
     create_ucraft_authtoken_and_is_ucraft_user_field_on_user()
+    frappe.db.set_value("Website Settings", "Website Settings", "app_name", "Ucraft ERPNext")
     os.system("pip install confluent_kafka==2.3.0")
 
 

@@ -125,24 +125,24 @@ after_uninstall = "ucraft.install.after_uninstall"
 # Hook on document methods and events
 doc_events = {
     "*": {
-        "on_update": "ucraft.kafka.send_to_kafka",
-        "on_cancel": "ucraft.kafka.send_to_kafka",
-        "on_trash": "ucraft.kafka.send_to_kafka",
-        "on_submit": "ucraft.kafka.send_to_kafka",
-        "before_insert": "ucraft.kafka.send_to_kafka",
-        "after_insert": "ucraft.kafka.send_to_kafka",
-        "before_save": "ucraft.kafka.send_to_kafka",
-        "after_save": "ucraft.kafka.send_to_kafka",
-        "before_rename": "ucraft.kafka.send_to_kafka",
-        "after_rename": "ucraft.kafka.send_to_kafka",
-        "before_cancel": "ucraft.kafka.send_to_kafka",
-        "after_cancel": "ucraft.kafka.send_to_kafka",
-        "before_trash": "ucraft.kafka.send_to_kafka",
-        "after_trash": "ucraft.kafka.send_to_kafka",
-        "before_restore": "ucraft.kafka.send_to_kafka",
-        "after_restore": "ucraft.kafka.send_to_kafka",
-        "before_delete": "ucraft.kafka.send_to_kafka",
-        "after_delete": "ucraft.kafka.send_to_kafka"
+        "on_update": "ucraft.kafka.send_to_kafka_async",
+        "on_cancel": "ucraft.kafka.send_to_kafka_async",
+        "on_trash": "ucraft.kafka.send_to_kafka_async",
+        "on_submit": "ucraft.kafka.send_to_kafka_async",
+        "before_insert": "ucraft.kafka.send_to_kafka_async",
+        "after_insert": "ucraft.kafka.send_to_kafka_async",
+        "before_save": "ucraft.kafka.send_to_kafka_async",
+        "after_save": "ucraft.kafka.send_to_kafka_async",
+        "before_rename": "ucraft.kafka.send_to_kafka_async",
+        "after_rename": "ucraft.kafka.send_to_kafka_async",
+        "before_cancel": "ucraft.kafka.send_to_kafka_async",
+        "after_cancel": "ucraft.kafka.send_to_kafka_async",
+        "before_trash": "ucraft.kafka.send_to_kafka_async",
+        "after_trash": "ucraft.kafka.send_to_kafka_async",
+        "before_restore": "ucraft.kafka.send_to_kafka_async",
+        "after_restore": "ucraft.kafka.send_to_kafka_async",
+        "before_delete": "ucraft.kafka.send_to_kafka_async",
+        "after_delete": "ucraft.kafka.send_to_kafka_async"
     }
 }
 
@@ -237,7 +237,8 @@ doc_events = {
 # 	"ucraft.auth.validate"
 # ]
 rest_api = {
-    'create_company_for_ucraft_project': 'ucraft.api.create_company_for_ucraft_project'
+    'create_company_for_ucraft_project': 'ucraft.api.create_company_for_ucraft_project',
+    'handle_callback': 'ucraft.api.handle_callback',
 }
 
 # Automatically update python controller files with type annotations for this app.

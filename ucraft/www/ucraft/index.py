@@ -12,9 +12,21 @@ from frappe.utils.jinja import guess_is_path
 from frappe.utils.oauth import get_oauth2_authorize_url, get_oauth_keys, redirect_post_login
 from frappe.utils.password import get_decrypted_password
 from frappe.website.utils import get_home_page
+from ucraft.constants import MAIN_URL_UCRAFT
 from ucraft.sso.auth import UcraftAuth
+import urllib.parse
 
 no_cache = True
+
+
+def construct_sso_auth_url(return_url, target='blank'):
+    base_url = f"{MAIN_URL_UCRAFT}/callback"
+    params = {
+        'target': target,
+        'returnUrl': return_url
+    }
+    url = f"{base_url}?{urllib.parse.urlencode(params)}"
+    return url
 
 
 def get_context(context):
@@ -31,6 +43,8 @@ def get_context(context):
             frappe.local.flags.redirect_location = redirect_to
             raise frappe.Redirect
 
+    site_url = frappe.utils.get_url()
+
     context.no_header = True
     context.for_test = "login.html"
     context["title"] = "Login"
@@ -39,8 +53,9 @@ def get_context(context):
     context["disable_signup"] = cint(frappe.get_website_settings("disable_signup"))
     context["disable_user_pass_login"] = cint(frappe.get_system_settings("disable_user_pass_login"))
     context["logo"] = frappe.get_website_settings("app_logo") or frappe.get_hooks("app_logo_url")[-1]
+    context["sso_url"] = construct_sso_auth_url(f"{site_url}/api/method/ucraft.api.handle_callback")
     context["app_name"] = (
-            frappe.get_website_settings("app_name") or frappe.get_system_settings("app_name") or _("Ucraft ERPNext")
+        _("Ucraft ERPNext")
     )
 
     signup_form_template = frappe.get_hooks("signup_form_template")
@@ -205,6 +220,8 @@ def login(usr, pwd):
             user = frappe.get_doc("User", user[0].name)
         user.auth_token = access_token
         user.is_ucraft_user = True
+        # Assign permissions
+
         user.save(ignore_permissions=True)
         frappe.local.login_manager.login_as(user.name)
         redirect_post_login(
@@ -212,3 +229,4 @@ def login(usr, pwd):
         )
     else:
         return False
+

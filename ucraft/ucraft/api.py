@@ -2,7 +2,6 @@ from pprint import pprint
 
 import frappe
 from frappe import _
-from ucraft.constants import DEFAULT_CURRENCY
 
 
 @frappe.whitelist(allow_guest=True)
@@ -17,8 +16,24 @@ def create_company_for_ucraft_project(project_id, company_name):
         'doctype': 'Company',
         'company_name': company_name,
         'ucraft_project_id': project_id,  # Ensure this custom field exists in the Company doctype
-        "default_currency": DEFAULT_CURRENCY,
+        "default_currency": "USD"",
     })
     new_company.insert()
 
     return {'message': f'Company {company_name} created successfully', 'status': 200}
+
+
+@frappe.whitelist(allow_guest=True)
+def handle_callback():
+    print("handle_callback_called")
+    data = frappe.form_dict
+    pprint(data)
+    auth_token = data.get('auth_token')
+    if not auth_token:
+        frappe.throw('Auth token not provided', frappe.PermissionError)
+    user = frappe.get_all(
+        "User",
+        filters={
+            "auth_token": auth_token
+        }
+    )
